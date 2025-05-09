@@ -104,7 +104,7 @@ function MovieDetails() {
                 mt={1}
                 mb={1} 
                 sx={{
-                  backgroundColor: 'rgba(187, 129, 21, 0.1)',
+                  backgroundColor: 'rgba(235, 191, 110, 0.92)',
                   borderRadius: 1,
                   p: 0.5,
                   display: 'inline-block'
