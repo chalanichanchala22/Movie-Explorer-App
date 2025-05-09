@@ -81,10 +81,7 @@ const getTrendingStyles = (darkMode) => ({
     padding: '8px',
     marginLeft: '10px',
   },
-  title: {
-    color: darkMode ? 'white' : '#333333',
-    mb: 2,
-  },
+ 
   controlsContainer: {
     alignItems: 'center',
   }
