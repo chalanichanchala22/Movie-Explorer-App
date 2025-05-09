@@ -27,7 +27,7 @@ function SearchBar() {
   return (
     <Container maxWidth="md" style={{ margin: '20px 0' }}>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={16} sm={4}>
           <TextField
             label="Search Movies"
             value={query}
@@ -36,7 +36,7 @@ function SearchBar() {
             margin="normal"
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={16} sm={4}>
           <TextField
             label="Year (e.g., 2020)"
             value={year}
@@ -45,7 +45,7 @@ function SearchBar() {
             margin="normal"
           />
         </Grid>
-        <Grid item xs={12} sm={4}>
+        <Grid item xs={16} sm={4}>
           <TextField
             label="Min Rating (e.g., 7)"
             value={rating}
@@ -54,10 +54,21 @@ function SearchBar() {
             margin="normal"
           />
         </Grid>
-      </Grid>
-      <Button variant="contained" onClick={searchMovies} fullWidth>
+        <Grid item xs={16} sm={4}>
+        <Button 
+        variant="contained" 
+        onClick={searchMovies} 
+        fullWidth
+        sx={{ backgroundColor: '#bb8115', '&:hover': { backgroundColor: '#9c6c10' },
+        height: '56px',
+         marginTop: '16px',
+    }}
+      >
         Search
       </Button>
+        </Grid>
+      </Grid>
+     
     </Container>
   );
 }

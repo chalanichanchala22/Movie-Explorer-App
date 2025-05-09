@@ -27,7 +27,12 @@ function MovieCard({ movie }) {
         <Typography variant="body2">Rating: {movie?.vote_average || 'N/A'}</Typography>
       </CardContent>
       <CardActions>
-        <Button onClick={() => navigate(`/movie/${movie?.id}`)}>View Details</Button>
+      <Button 
+          onClick={() => navigate(`/movie/${movie?.id}`)}
+          sx={{ color: '#bb8115', '&:hover': { backgroundColor: 'rgba(202, 104, 13, 0.08)' } }}
+        >
+          View Details
+        </Button>
       </CardActions>
     </Card>
   );

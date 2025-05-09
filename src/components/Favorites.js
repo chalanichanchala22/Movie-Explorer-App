@@ -1,33 +1,22 @@
 import { useContext } from 'react';
 import { MovieContext } from '../context/MovieContext';
 import MovieCard from './MovieCard';
-import { Container, Grid, Typography } from '@mui/material';
+import { Container, Grid, Typography, Box } from '@mui/material';
 
 const favoritesStyles = {
-  container: {
+  root: {
     minHeight: '100vh',
-    backgroundImage: 'url("https://images.unsplash.com/photo-1598899134739-24c46f58b8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1950&q=80")', // Movie-themed background
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
-    position: 'relative',
+    width: '100%',
+    backgroundColor: 'rgba(236, 196, 16, 0.8)', 
     padding: '20px',
-    '&::before': {
-      content: '""',
-      position: 'absolute',
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      backgroundColor: 'rgba(0, 0, 0, 0.5)', // Dark overlay
-      zIndex: 1,
-    },
+    overflow: 'hidden',
   },
   content: {
     zIndex: 2,
     position: 'relative',
   },
   title: {
-    color: '#fff', // White text for contrast against the dark overlay
+    color: '#ffffff', 
     marginBottom: '20px',
   },
   message: {
@@ -40,7 +29,7 @@ function Favorites() {
   const { favorites } = useContext(MovieContext);
 
   return (
-    <Container sx={favoritesStyles.container}>
+    <Box sx={favoritesStyles.root}>
       <Container sx={favoritesStyles.content}>
         <Typography variant="h4" gutterBottom sx={favoritesStyles.title}>
           Favorites
@@ -59,7 +48,7 @@ function Favorites() {
           </Grid>
         )}
       </Container>
-    </Container>
+    </Box>
   );
 }
 
