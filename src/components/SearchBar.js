@@ -49,29 +49,7 @@ function SearchBar() {
             }}
           />
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <Typography component="legend" sx={{ color: darkMode ? '#ffffff' : '#333333', mr: 1 }}>
-              Min Rating:
-            </Typography>
-            <Rating
-              name="min-rating"
-              value={minRating}
-              onChange={(event, newValue) => {
-                setMinRating(newValue || 0);
-              }}
-              precision={0.5}
-              sx={{
-                '& .MuiRating-iconFilled': {
-                  color: '#bb8115',
-                },
-                '& .MuiRating-iconEmpty': {
-                  color: darkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
-                },
-              }}
-            />
-          </Box>
-        </Grid>
+      
         <Grid item xs={12} md={2}>
           <Button 
             variant="contained" 
