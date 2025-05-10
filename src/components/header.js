@@ -57,7 +57,7 @@ const Header = () => {
     <header className="header">
       <div className="container">
         <div className="logo">
-          <Link to="/">Movie Explorer</Link>
+          <Link to="/">Login Page</Link>
         </div>
         
         <Box sx={headerStyles.controlsContainer}>

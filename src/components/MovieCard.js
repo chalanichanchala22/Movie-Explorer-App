@@ -10,7 +10,15 @@ function MovieCard({ movie }) {
     : '/no-poster.png'; // Create a placeholder image
 
   return (
-    <Card>
+    <Card
+      sx={{
+        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+        '&:hover': {
+          transform: 'scale(1.03)',
+          boxShadow: '0 8px 16px rgba(0,0,0,0.2)',
+        },
+      }}
+    >
       <CardMedia
         component="img"
         height="300"

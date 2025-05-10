@@ -8,12 +8,14 @@ import { Container, Grid, Button, Box, Typography } from '@mui/material';
 const getTrendingStyles = (darkMode) => ({
   pageWrapper: {
     width: '100%',
-    minHeight: 'auto',
+    display: 'flex',
+    flexDirection: 'column',
     position: 'relative',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     overflow: 'hidden',
+    flex: '1 1 auto',
   },
   container: {
     position: 'relative',
@@ -27,7 +29,7 @@ const getTrendingStyles = (darkMode) => ({
       left: 0,
       right: 0,
       bottom: 0,
-      backgroundColor: darkMode ? 'rgba(29, 28, 25, 0.82)' : 'rgba(223, 178, 29, 0.7)',
+      backgroundColor: darkMode ? 'rgba(85, 84, 81, 0.82)' : 'rgb(255, 255, 255)',
       zIndex: 1,
     },
   },
@@ -42,6 +44,7 @@ const getTrendingStyles = (darkMode) => ({
     position: 'relative',
     flexDirection: 'column',
     width: '100%',
+    height:'100%',
     padding: '0 20px',
   },
   button: {
@@ -52,6 +55,17 @@ const getTrendingStyles = (darkMode) => ({
     '&:hover': {
       backgroundColor: '#bb8115',
     },
+  },
+  cardWrapper: {
+    border: darkMode ? '2px solid #bb8115' : '2px solid #dca552',
+    borderRadius: '8px',
+    transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+    '&:hover': {
+      transform: 'translateY(-5px)',
+      boxShadow: darkMode ? '0 10px 20px rgba(0,0,0,0.3)' : '0 10px 20px rgba(0,0,0,0.15)',
+    },
+    height: '100%',
+    display: 'flex',
   }
 });
 
@@ -94,10 +108,12 @@ function TrendingMovies() {
           </Typography>
           
           <SearchBar />
-          <Grid container spacing={2}>
+          <Grid container spacing={3}>
             {movies.map((movie) => (
               <Grid item xs={12} sm={6} md={4} key={movie.id}>
-                <MovieCard movie={movie} />
+                <Box sx={trendingStyles.cardWrapper}>
+                  <MovieCard movie={movie} />
+                </Box>
               </Grid>
             ))}
           </Grid>

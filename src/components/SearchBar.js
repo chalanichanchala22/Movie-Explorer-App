@@ -1,75 +1,97 @@
 import { useContext, useState } from 'react';
 import { MovieContext } from '../context/MovieContext';
-import axios from 'axios';
-import { TextField, Button, Container, Grid } from '@mui/material';
+import { Box, TextField, Button, Grid, Typography, Rating } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
 
 function SearchBar() {
-  const { setMovies } = useContext(MovieContext);
-  const [query, setQuery] = useState('');
-  const [year, setYear] = useState('');
-  const [rating, setRating] = useState('');
+  const { darkMode, search, setSearch, minRating, setMinRating } = useContext(MovieContext);
+  const [searchInput, setSearchInput] = useState(search);
 
-  const searchMovies = async () => {
-    try {
-      let url = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.REACT_APP_TMDB_API_KEY}`;
-      if (query) url += `&query=${query}`;
-      if (year) url += `&primary_release_year=${year}`;
-      if (rating) url += `&vote_average.gte=${rating}`;
+  const handleSearchChange = (e) => {
+    setSearchInput(e.target.value);
+  };
 
-      const response = await axios.get(url);
-      setMovies(response.data.results);
-    } catch (error) {
-      console.error('Error fetching movies:', error);
-      alert('Failed to fetch movies. Please try again later.');
+  const handleSearch = () => {
+    setSearch(searchInput);
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleSearch();
     }
   };
 
   return (
-    <Container maxWidth="md" style={{ margin: '20px 0' }}>
-      <Grid container spacing={2}>
-        <Grid item xs={16} sm={4}>
+    <Box sx={{ mb: 4 }}>
+      <Grid container spacing={2} alignItems="center">
+        <Grid item xs={12} md={6}>
           <TextField
-            label="Search Movies"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
             fullWidth
-            margin="normal"
+            variant="outlined"
+            placeholder="Search movies..."
+            value={searchInput}
+            onChange={handleSearchChange}
+            onKeyDown={handleKeyDown}
+            sx={{
+              backgroundColor: darkMode ? 'rgba(255, 255, 255, 0.15)' : 'rgba(0, 0, 0, 0.05)',
+              borderRadius: '4px',
+              '& .MuiOutlinedInput-root': {
+                '& fieldset': {
+                  borderColor: darkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.23)',
+                },
+                '&:hover fieldset': {
+                  borderColor: darkMode ? '#bb8115' : '#bb8115',
+                },
+              },
+              '& .MuiInputBase-input': {
+                color: darkMode ? '#ffffff' : '#333333',
+              }
+            }}
           />
         </Grid>
-        <Grid item xs={16} sm={4}>
-          <TextField
-            label="Year (e.g., 2020)"
-            value={year}
-            onChange={(e) => setYear(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
+        <Grid item xs={12} md={4}>
+          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Typography component="legend" sx={{ color: darkMode ? '#ffffff' : '#333333', mr: 1 }}>
+              Min Rating:
+            </Typography>
+            <Rating
+              name="min-rating"
+              value={minRating}
+              onChange={(event, newValue) => {
+                setMinRating(newValue || 0);
+              }}
+              precision={0.5}
+              sx={{
+                '& .MuiRating-iconFilled': {
+                  color: '#bb8115',
+                },
+                '& .MuiRating-iconEmpty': {
+                  color: darkMode ? 'rgba(255, 255, 255, 0.3)' : 'rgba(0, 0, 0, 0.3)',
+                },
+              }}
+            />
+          </Box>
         </Grid>
-        <Grid item xs={16} sm={4}>
-          <TextField
-            label="Min Rating (e.g., 7)"
-            value={rating}
-            onChange={(e) => setRating(e.target.value)}
-            fullWidth
-            margin="normal"
-          />
-        </Grid>
-        <Grid item xs={16} sm={4}>
-        <Button 
-        variant="contained" 
-        onClick={searchMovies} 
-        fullWidth
-        sx={{ backgroundColor: '#bb8115', '&:hover': { backgroundColor: '#9c6c10' },
-        height: '56px',
-         marginTop: '16px',
-    }}
-      >
-        Search
-      </Button>
+        <Grid item xs={12} md={2}>
+          <Button 
+            variant="contained" 
+            onClick={handleSearch}
+            startIcon={<SearchIcon />}
+            sx={{
+              backgroundColor: '#bb8115',
+              color: '#ffffff',
+              fontWeight: 'bold',
+              '&:hover': {
+                backgroundColor: '#9e6c13',
+              },
+              width: { xs: '100%', md: 'auto' }
+            }}
+          >
+            Search
+          </Button>
         </Grid>
       </Grid>
-     
-    </Container>
+    </Box>
   );
 }
 
