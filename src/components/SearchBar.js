@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { MovieContext } from '../context/MovieContext';
 import { Box, TextField, Button, Grid, Typography, Rating, Select, MenuItem, FormControl, InputLabel, Slider } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
@@ -12,6 +12,26 @@ function SearchBar({ onSearch }) {
   const [yearFilter, setYearFilter] = useState([1900, 2025]);
   const [ratingFilter, setRatingFilter] = useState(0);
 
+  // Load last search from localStorage when component mounts
+  useEffect(() => {
+    const savedSearch = localStorage.getItem('lastMovieSearch');
+    if (savedSearch) {
+      try {
+        const parsedSearch = JSON.parse(savedSearch);
+        setSearchInput(parsedSearch.query || '');
+        setGenreFilter(parsedSearch.genre || '');
+        setYearFilter(parsedSearch.year || [1900, 2025]);
+        setRatingFilter(parsedSearch.rating || 0);
+        
+        // Apply the last search automatically
+        onSearch(parsedSearch);
+      } catch (error) {
+        console.error('Error parsing saved search:', error);
+        localStorage.removeItem('lastMovieSearch');
+      }
+    }
+  }, [onSearch]);
+
   // List of common movie genres
   const genres = [
     'Action', 'Adventure', 'Animation', 'Comedy', 'Crime', 'Documentary',
@@ -24,12 +44,17 @@ function SearchBar({ onSearch }) {
 
   const handleSearch = () => {
     if (onSearch) {
-      onSearch({
+      const searchParams = {
         query: searchInput,
         genre: genreFilter,
         year: yearFilter,
         rating: ratingFilter
-      });
+      };
+      
+      // Save search params to localStorage
+      localStorage.setItem('lastMovieSearch', JSON.stringify(searchParams));
+      
+      onSearch(searchParams);
     }
   };
 
@@ -44,6 +69,10 @@ function SearchBar({ onSearch }) {
     setGenreFilter('');
     setYearFilter([1900, 2025]);
     setRatingFilter(0);
+    
+    // Clear saved search from localStorage
+    localStorage.removeItem('lastMovieSearch');
+    
     if (onSearch) {
       onSearch({ query: '', genre: '', year: [1900, 2025], rating: 0 });
     }
