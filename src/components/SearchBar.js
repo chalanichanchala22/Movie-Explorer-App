@@ -3,21 +3,30 @@ import { MovieContext } from '../context/MovieContext';
 import { Box, TextField, Button, Grid, Typography, Rating } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 
-function SearchBar() {
-  const { darkMode, search, setSearch, minRating, setMinRating } = useContext(MovieContext);
-  const [searchInput, setSearchInput] = useState(search);
+function SearchBar({ onSearch }) {
+  const { darkMode } = useContext(MovieContext);
+  const [searchInput, setSearchInput] = useState('');
 
   const handleSearchChange = (e) => {
     setSearchInput(e.target.value);
   };
 
   const handleSearch = () => {
-    setSearch(searchInput);
+    if (onSearch) {
+      onSearch(searchInput);
+    }
   };
 
   const handleKeyDown = (e) => {
     if (e.key === 'Enter') {
       handleSearch();
+    }
+  };
+
+  const handleClear = () => {
+    setSearchInput('');
+    if (onSearch) {
+      onSearch('');
     }
   };
 
@@ -68,6 +77,26 @@ function SearchBar() {
             Search
           </Button>
         </Grid>
+        
+        {searchInput && (
+          <Grid item xs={12} md={2}>
+            <Button 
+              variant="outlined" 
+              onClick={handleClear}
+              sx={{
+                borderColor: darkMode ? '#bb8115' : '#9e6c13',
+                color: darkMode ? '#ffffff' : '#333333',
+                '&:hover': {
+                  borderColor: '#bb8115',
+                  backgroundColor: 'rgba(187, 129, 21, 0.04)',
+                },
+                width: { xs: '100%', md: 'auto' }
+              }}
+            >
+              Clear
+            </Button>
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

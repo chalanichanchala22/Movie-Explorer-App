@@ -8,7 +8,7 @@ Movie Explorer is built using React and integrates with The Movie Database (TMDB
 
 ## Features
 
-- **User Authentication**: Simple login system to personalize the user experience
+- **User Authentication**: Simple login system to personalize the user experience,Enter any username and password,both fields are required
 - **Browse Trending Content**: View trending movies and TV shows for the current week
 - **Toggle Between Movies and TV Shows**: Switch content type with a single click
 - **Search Functionality**: Search for movies by title, release year, and minimum rating

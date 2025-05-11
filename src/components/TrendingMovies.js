@@ -72,42 +72,85 @@ const getTrendingStyles = (darkMode) => ({
 function TrendingMovies() {
   const { movies, setMovies, mediaType, darkMode } = useContext(MovieContext);
   const [page, setPage] = useState(1);
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
   
   const trendingStyles = getTrendingStyles(darkMode);
 
   useEffect(() => {
-    const fetchTrending = async () => {
+    // Only fetch trending if not searching
+    if (!isSearching) {
+      const fetchTrending = async () => {
+        try {
+          const response = await axios.get(
+            `https://api.themoviedb.org/3/trending/${mediaType}/week?api_key=${process.env.REACT_APP_TMDB_API_KEY}&page=${page}`
+          );
+          if (page === 1) {
+            setMovies(response.data.results);
+          } else {
+            setMovies((prev) => [...prev, ...response.data.results]);
+          }
+        } catch (error) {
+          console.error(`Error fetching trending ${mediaType}:`, error);
+          alert(`Failed to fetch trending ${mediaType === 'movie' ? 'movies' : 'TV shows'}. Please try again later.`);
+        }
+      };
+      fetchTrending();
+    }
+  }, [page, setMovies, mediaType, isSearching]);
+
+  const handleSearch = async (query) => {
+    if (query) {
+      setSearchQuery(query);
+      setIsSearching(true);
+      setPage(1);
+      
       try {
         const response = await axios.get(
-          `https://api.themoviedb.org/3/trending/${mediaType}/week?api_key=${process.env.REACT_APP_TMDB_API_KEY}&page=${page}`
+          `https://api.themoviedb.org/3/search/${mediaType}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&query=${query}&page=${page}`
         );
-        if (page === 1) {
-          setMovies(response.data.results);
-        } else {
-          setMovies((prev) => [...prev, ...response.data.results]);
-        }
+        setMovies(response.data.results);
       } catch (error) {
-        console.error(`Error fetching trending ${mediaType}:`, error);
-        alert(`Failed to fetch trending ${mediaType === 'movie' ? 'movies' : 'TV shows'}. Please try again later.`);
+        console.error(`Error searching ${mediaType}:`, error);
+        alert(`Failed to search ${mediaType === 'movie' ? 'movies' : 'TV shows'}. Please try again later.`);
       }
-    };
-    fetchTrending();
-  }, [page, setMovies, mediaType]);
+    } else {
+      // Reset to trending when search is cleared
+      setIsSearching(false);
+      setPage(1);
+    }
+  };
 
   const loadMore = () => {
     setPage((prev) => prev + 1);
   };
 
+  const loadMoreSearch = async () => {
+    const nextPage = page + 1;
+    setPage(nextPage);
+    
+    try {
+      const response = await axios.get(
+        `https://api.themoviedb.org/3/search/${mediaType}?api_key=${process.env.REACT_APP_TMDB_API_KEY}&query=${searchQuery}&page=${nextPage}`
+      );
+      setMovies((prev) => [...prev, ...response.data.results]);
+    } catch (error) {
+      console.error(`Error searching ${mediaType}:`, error);
+      alert(`Failed to load more search results. Please try again later.`);
+    }
+  };
+
   return (
     <Box sx={trendingStyles.pageWrapper}>
-    
       <Box sx={trendingStyles.container}>
         <Container sx={trendingStyles.content}>
           <Typography variant="h4" component="h1" sx={trendingStyles.title}>
-            Trending {mediaType === 'movie' ? 'Movies' : 'TV Shows'} This Week
+            {isSearching 
+              ? `Search Results for "${searchQuery}"`
+              : `Trending ${mediaType === 'movie' ? 'Movies' : 'TV Shows'} This Week`}
           </Typography>
           
-          <SearchBar />
+          <SearchBar onSearch={handleSearch} />
           <Grid container spacing={3}>
             {movies.map((movie) => (
               <Grid item xs={12} sm={6} md={4} key={movie.id}>
@@ -117,9 +160,19 @@ function TrendingMovies() {
               </Grid>
             ))}
           </Grid>
-          <Button variant="contained" onClick={loadMore} sx={{ ...trendingStyles.button, margin: '20px auto', display: 'block' }}>
-            Load More
-          </Button>
+          {movies.length > 0 ? (
+            <Button 
+              variant="contained" 
+              onClick={isSearching ? loadMoreSearch : loadMore} 
+              sx={{ ...trendingStyles.button, margin: '20px auto', display: 'block' }}
+            >
+              Load More
+            </Button>
+          ) : (
+            <Typography variant="h6" sx={{textAlign: 'center', my: 4}}>
+              No results found. Try a different search.
+            </Typography>
+          )}
         </Container>
       </Box>
     </Box>

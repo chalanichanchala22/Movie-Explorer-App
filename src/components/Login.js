@@ -41,6 +41,8 @@ function Login() {
         sx={{ 
           maxHeight: '90vh',
           overflow: 'auto',
+          display: 'flex',
+          justifyContent: 'center',
         }}
       >
         <Box
@@ -48,9 +50,10 @@ function Login() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            width:'50%',
+            width: { xs: '100%', sm: '80%', md: '70%' },
+            mx: 'auto',
             p: 6,
-            boxShadow:3,
+            boxShadow: 3,
             borderRadius: 2,
             bgcolor: 'rgba(255, 255, 255, 0.9)',
             backdropFilter: 'blur(5px)',
@@ -78,7 +81,7 @@ function Login() {
             variant="contained" 
             onClick={handleLogin}
             fullWidth
-            sx={{ mt: 3, backgroundColor: '#bb8115', '&:hover': { backgroundColor: '#fffff' } }}
+            sx={{ mt: 3, backgroundColor: '#bb8115', '&:hover': { backgroundColor: '#a06e10' } }}
           >
             Login
           </Button>
