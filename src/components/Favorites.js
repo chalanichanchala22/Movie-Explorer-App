@@ -4,7 +4,7 @@ import MovieCard from './MovieCard';
 import { Container, Grid, Typography, Box } from '@mui/material';
 
 function Favorites() {
-  const { favorites, darkMode, themeColors } = useContext(MovieContext);
+  const { favorites, darkMode} = useContext(MovieContext);
 
   const favoritesStyles = {
     pageWrapper: {
