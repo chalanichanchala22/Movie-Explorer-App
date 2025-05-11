@@ -1,18 +1,38 @@
 import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MovieContext } from '../context/MovieContext';
-import { TextField, Button, Container, Typography, Box } from '@mui/material';
+import { TextField, Button, Container, Typography, Box, Alert } from '@mui/material';
 
 function Login() {
   const { setUser } = useContext(MovieContext);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
   const navigate = useNavigate();
 
+  // Valid credential
+  const validCredential = { username: 'user', password: 'movie2025' };
+
   const handleLogin = () => {
-    if (username && password) {
+    setError('');
+    
+    if (!username.trim() || !password.trim()) {
+      setError('Please enter both username and password');
+      return;
+    }
+
+    // Check if credentials match
+    if (username === validCredential.username && password === validCredential.password) {
       setUser({ username });
       navigate('/home');
+    } else {
+      setError('Invalid username or password');
+    }
+  };
+
+  const handleKeyDown = (e) => {
+    if (e.key === 'Enter') {
+      handleLogin();
     }
   };
 
@@ -62,10 +82,18 @@ function Login() {
           <Typography variant="h4" component="h1" gutterBottom>
             Login
           </Typography>
+          
+          {error && (
+            <Alert severity="error" sx={{ width: '100%', mb: 2 }}>
+              {error}
+            </Alert>
+          )}
+          
           <TextField
             label="Username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
+            onKeyDown={handleKeyDown}
             fullWidth
             margin="normal"
           />
@@ -74,6 +102,7 @@ function Login() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            onKeyDown={handleKeyDown}
             fullWidth
             margin="normal"
           />
@@ -85,6 +114,7 @@ function Login() {
           >
             Login
           </Button>
+          
         </Box>
       </Container>
     </Box>

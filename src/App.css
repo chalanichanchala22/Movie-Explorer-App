@@ -27,7 +27,10 @@ body, html, #root {
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding: 0 1rem; /* Add padding for small screens */
+}
+
+.content {
+  flex: 1;
 }
 
 .main-content {
@@ -40,6 +43,10 @@ body, html, #root {
 .header, .footer {
   flex-shrink: 0;
   width: 100%;
+}
+
+.footer {
+  margin-top: 0;
 }
 
 #root {
@@ -131,7 +138,6 @@ body, html, #root {
   background-color: #3b2f08;
   color: #fff;
   padding: 1.5rem 0;
-  margin-top: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
